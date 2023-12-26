@@ -1,0 +1,175 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+
+{% block content %}
+<h1> {{context.title}} </h1>
+<hr>
+<div class="row">
+    <div class="col">
+        <h4> Первичные метрические характеристики: </h4>
+        <hr>
+        <form id="param1">
+            {% csrf_token %}
+            <div class="col">
+                <div class="mb-3">
+                    <label class="form-label">Число простых (уникальный) операторов n1</label>
+                    <input class="form-control" id='n1' name="Число простых операторов n1" onchange="calculate()">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Число простых (уникальный) операндов n2</label>
+                    <input class="form-control" id='n2' name="Число простых операндов n2" onchange="calculate()">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Общее число всех операторов N1</label>
+                    <input class="form-control" id='BN1' name="Общее число всех операторов N1" onchange="calculate()">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Общее число всех операндов N2</label>
+                    <input class="form-control" id='BN2' name="Общее число всех операндов N2" onchange="calculate()">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Входные/выходные переменные k</label>
+                    <input class="form-control" id='k' name="Входные/выходные переменные k" onchange="calculate()">
+                </div>
+                <hr>
+                <div class="row justify-content-md-center">
+                    <div class="col">
+                        <button class='btn btn-primary' type="submit" style="width: 200px">Сохранить в БД</button>
+                    </div>
+                    <div class="col">
+                        <button class='btn btn-primary' type="button" style="width: 200px" onclick="location.reload();">Очистить форму</button>
+                    </div>
+                    <div class="col">
+                        <button class='btn btn-primary' type="button" style="width: 200px" onclick="get_pdf()">Отчёт</button>
+                    </div>
+                </div>
+                <hr>
+            </div>
+        </form>
+    </div>
+    <div class="col">
+        <h4> Рассчитанные метрические характеристики: </h4>
+        <hr>
+        <form id="param2">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label class="form-label">Словарь n</label>
+                <input class="form-control" name="Словарь n" id="dict" readonly>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Длинна реализации программы N</label>
+                <input class="form-control" name="Длинна реализации программы N" id="len_realize" readonly>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Длинна программы</label>
+                <input class="form-control" name='Длинна программы' id="len_pg" readonly>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Объём программы</label>
+                <input class="form-control" name='Объём программы' id="Capacity" readonly>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Потенциальный объём программы</label>
+                <input class="form-control" name='Потенциальный объём программы' id="PotentialCapacity" readonly>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Уровень качества программы</label>
+                <input class="form-control" name='Уровень качества программы' id="ProgramLevel" readonly>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Уровень языка</label>
+                <input class="form-control" name='Уровень языка' id="LanguageLevel" readonly>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Интеллектуальное содержание</label>
+                <input class="form-control" name='Интеллектуальное содержание' id="IntellectualContent" readonly>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Работа по программированию</label>
+                <input class="form-control" name='Работа по программированию' id="WorkCount" readonly>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Уровень качества программирования</label>
+                <input class="form-control" name='Уровень качества программирования' id="QualityLevel" readonly>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Сложность понимания программы</label>
+                <input class="form-control" name='Сложность понимания программы' id="UnderstandDifficulty" readonly>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Трудоёмкость кодирования</label>
+                <input class="form-control" name='Трудоёмкость кодирования' id="Laboriousness" readonly>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Уровень языкового выражения</label>
+                <input class="form-control" name='Уровень языкового выражения' id="ExpressionLevel" readonly>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<script>
+    function calculate() {
+        console.log('Calculate');
+        const n1 = Number(document.getElementById('n1').value);
+        const n2 = Number(document.getElementById('n2').value);
+        const bn1 = Number(document.getElementById('BN1').value);
+        const bn2 = Number(document.getElementById('BN2').value);
+        const k = Number(document.getElementById('k').value);
+
+        <!--    Словарь    -->
+        const n = n1 + n2;
+        document.getElementById('dict').value = n;
+        <!--    Длина реализованной пг    -->
+        const bn = bn1 + bn2;
+        document.getElementById('len_realize').value = bn;
+        <!--    Длина пг    -->
+        document.getElementById('len_pg').value = n1*Math.log2(n1)+n2*Math.log2(n2);
+        <!--    Объем пг    -->
+        const Capacity = bn * Math.log2(n);
+        document.getElementById('Capacity').value = Capacity;
+        <!--    Потенциальный объем пг    -->
+        const PotentialCapacity = (k+2) * Math.log2(k+2);
+        document.getElementById('PotentialCapacity').value = PotentialCapacity;
+
+        const ProgramLevel = PotentialCapacity / Capacity;
+        document.getElementById('ProgramLevel').value = ProgramLevel;
+
+        document.getElementById('LanguageLevel').value = ProgramLevel * PotentialCapacity;
+        document.getElementById('IntellectualContent').value = ProgramLevel *  Capacity;
+        document.getElementById('WorkCount').value = Capacity / ProgramLevel;
+
+        const QualityLevel = (2 * n2) / (n1 * bn2);
+        document.getElementById('QualityLevel').value = QualityLevel;
+        document.getElementById('UnderstandDifficulty').value = Capacity / QualityLevel;
+        const Laboriousness = 1 / QualityLevel;
+        document.getElementById('Laboriousness').value = Laboriousness;
+        document.getElementById('ExpressionLevel').value = Capacity / (Math.pow(Laboriousness, 2));
+
+    }
+
+    function get_pdf(){
+        data = new FormData(document.getElementById('param1'));
+        data2 = new FormData(document.getElementById('param2'));
+        for(var pair of data2.entries()){
+            data.append(pair[0], pair[1]);
+        }
+        console.log('data=', data);
+        const url = 'http://'+window.location.hostname+':'+window.location.port+'{% url "get_pdf" %}';
+        fetch(url,
+         { method: 'POST', body: data, credentials: 'same-origin',})
+         .then(response=>response.blob())
+         .then(data=>{
+                const anchorElement = document.createElement('a');
+                const url = window.URL.createObjectURL(data);
+                anchorElement.href = url;
+                anchorElement.download = 'Отчёт метрика Холстеда';
+                anchorElement.click();
+             });
+    }
+</script>
+
+{% endblock %}

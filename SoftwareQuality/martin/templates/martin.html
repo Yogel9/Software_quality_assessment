@@ -1,0 +1,184 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+
+{% block content %}
+<h1> {{context.title}} </h1>
+<hr>
+<div class="row">
+    <div class="col">
+        <h4> Первичные метрические характеристики: </h4>
+        <hr>
+        <form id="param1">
+            {% csrf_token %}
+            <div class="col">
+                <div class="mb-3">
+                    <label class="form-label">Са (центростремительное сцепление)</label>
+                    <input class="form-control" id='ca' name="Са (центростремительное сцепление)" onchange="calculate()">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label"> Се (центробежное сцепление)</label>
+                    <input class="form-control" id='ce' name="Се (центробежное сцепление)" onchange="calculate()">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">nA количество абстрактных классов в категории</label>
+                    <input class="form-control" id='na' name="nA количество абстрактных классов в кат." onchange="calculate()">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">nАll общее количество классов в категории</label>
+                    <input class="form-control" id='nall' name="nАll общее количество классов в кат." onchange="calculate()">
+                </div>
+                <hr>
+                <div class="row justify-content-md-center">
+                    <div class="col">
+                        <button class='btn btn-primary' type="submit" style="width: 200px">Сохранить в БД</button>
+                    </div>
+                    <div class="col">
+                        <button class='btn btn-primary' type="button" style="width: 200px" onclick="location.reload();">Очистить форму</button>
+                    </div>
+                    <div class="col">
+                        <button class='btn btn-primary' type="button" style="width: 200px" onclick="get_pdf()">Отчёт</button>
+                    </div>
+                </div>
+                <hr>
+            </div>
+        </form>
+        <div>
+            <div class="pdf_holder">
+                <p align="justify">
+                Мартин предложил следующие метрики для
+                оценки характеристик программы при
+                объектно-ориентированном программировании:
+            </p><p align="justify">
+                • <i>Са (центростремительное сцепление)
+                — </i>метрика, определяющая количество
+                классов вне конкретной категории,
+                которые зависят от классов внутри нее;</p><p align="justify">
+                • <i>Се (центробежное сцепление) —
+            </i>метрика, оценивающая количество
+                классов внутри конкретной категории,
+                которые зависят от классов вне ее;</p><p align="justify">
+                • <i>I (нестабильность) — </i>расчетная
+                метрика, определяемая в соответствии
+                с выражением</p><p align="center">
+                <img src="/html/2706/166/html_MFX4IUTXZq.2Ctg/img-5oEPrA.png"></p><p align="justify">
+                Данная метрика имеет диапазон значений
+                [0, 1]: значение метрики <i>I = 0 </i>означает
+                максимально стабильную категорию, а<i>I
+                = </i>1 указывает максимально нестабильную
+                категорию.</p><p align="justify">
+                Дополнительно <i>к </i>указанным метрикам
+                можно определять меру<i>А (абстрактность),
+            </i>которая позволяет оценить абстрактность
+                категории (если категория абстрактна,
+                то она является достаточно гибкой и
+                может быть легко расширена):</p><p align="center">
+                <img src="/html/2706/166/html_MFX4IUTXZq.2Ctg/img-BPOtvR.png"></p><p align="justify">
+                где <i>пА — </i>количество абстрактных
+                классов в категории;<i>пА</i><i>ll</i><i>
+                — </i>общее количество классов в категории</p><p align="justify">
+                Значения метрики абстрактности
+                расположены в диапазоне [0, 1]: при нулевом
+                значении категория полностью конкретна,
+                а при единичном значении является
+                полностью абстрактной.</p><p align="justify">
+                На основе приведенных метрик Мартина
+                можно построить график, отражающий
+                зависимость между абстрактностью и
+                нестабильностью. Если построить прямую,
+                задаваемую формулой <i>I</i>+<i>А</i>= 1, то категории, расположенные на
+                этой прямой, будут иметь наилучшую
+                сбалансированность между абстрактностью
+                и нестабильностью. Эта прямая называется<i>главной последовательностью.</i></p><p align="justify">
+                Получив главную последовательность,
+                можно ввести еще две метрики.</p><p align="justify">
+                Расстояние до главной последовательности,
+                определяемое выражением</p><p align="center">
+                <img src="/html/2706/166/html_MFX4IUTXZq.2Ctg/img-lRLe72.png"></p><p align="justify">
+                Второй метрикой, которая может быть
+                введена на основе полученной главной
+                последовательности, является
+                нормализированное расстояние до главной
+                последовательности</p><p align="center">
+                <i>D</i><sub><i>n</i></sub>=|<i>A</i><i>
+
+            </i>+<i>I</i><i> </i>- 2|</p><p align="justify">
+                Практически для любых категорий классов
+                справедливым является утверждение, что
+                чем ближе они находятся к<i> </i>главной
+                последовательности, тем лучше для
+                обеспечения качества программного
+                средства.</p>
+                </div>
+        </div>
+    </div>
+    <div class="col">
+        <h4> Рассчитанные метрические характеристики: </h4>
+        <hr>
+        <form id="param2">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label class="form-label">I (нестабильность) </label>
+                <input class="form-control" name="I (нестабильность)" id="i" readonly>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">А (абстрактность)</label>
+                <input class="form-control" name="А (абстрактность)" id="a" readonly>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">D расстояние до главной последовательности</label>
+                <input class="form-control" name='D расстояние до главной посл.' id="d" readonly>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Dn нормализированное расстояние до главной последовательности</label>
+                <input class="form-control" name='Dn нормализированное расстояние' id="dn" readonly>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+
+<script>
+    function calculate() {
+        console.log('Calculate');
+        const ca = Number(document.getElementById('ca').value);
+        const ce = Number(document.getElementById('ce').value);
+        const na = Number(document.getElementById('na').value);
+        const nall = Number(document.getElementById('nall').value);
+
+
+        const i = ce/(ca+ce);
+        const a = na/nall;
+        const d = Math.abs(a+i-1)/Math.sqrt(2);
+        const dn= Math.abs(a+i-2);
+
+        document.getElementById('i').value = i;
+        document.getElementById('a').value = a;
+        document.getElementById('d').value = d;
+        document.getElementById('dn').value = dn;
+    }
+
+    function get_pdf(){
+        data = new FormData(document.getElementById('param1'));
+        data2 = new FormData(document.getElementById('param2'));
+        for(var pair of data2.entries()){
+            data.append(pair[0], pair[1]);
+        }
+        console.log('data=', data);
+        const url = 'http://'+window.location.hostname+':'+window.location.port+'{% url "get_pdf" %}';
+        fetch(url,
+         { method: 'POST', body: data, credentials: 'same-origin',})
+         .then(response=>response.blob())
+         .then(data=>{
+                const anchorElement = document.createElement('a');
+                const url = window.URL.createObjectURL(data);
+                anchorElement.href = url;
+                anchorElement.download = 'Отчёт метрика Холстеда';
+                anchorElement.click();
+             });
+    }
+</script>
+
+{% endblock %}
