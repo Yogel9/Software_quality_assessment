@@ -7,10 +7,10 @@
 <h1> {{context.title}} </h1>
 <hr>
 <div class="row">
-    <div class="col">
+    <div class="col-6">
         <h4> Первичные метрические характеристики: </h4>
         <hr>
-        <form id="param1">
+        <form action='' id="param1" method="POST">
             {% csrf_token %}
             <div class="col">
                 <div class="mb-3">
@@ -61,7 +61,7 @@
             </div>
         </form>
     </div>
-    <div class="col">
+    <div class="col-6">
         <h4> Рассчитанные метрические характеристики: </h4>
         <hr>
         <form id="param2">
@@ -71,6 +71,37 @@
                 <input class="form-control" name="Метрика Чепина" id="Q" readonly>
             </div>
         </form>
+        <hr>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Вводимые переменные</th>
+                <th scope="col">Вес1</th>
+                <th scope="col">Модифицируемые переменные</th>
+                <th scope="col">Вес2</th>
+                <th scope="col">Переменные управления</th>
+                <th scope="col">Вес3</th>
+                <th scope="col">Не исп. переменные</th>
+                <th scope="col">Вес4</th>
+                <th scope="col">-</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for p in context.my_param %}
+            <tr>
+                <td>{{ p.param1 }}</td>
+                <td>{{ p.param2 }}</td>
+                <td>{{ p.param3 }}</td>
+                <td>{{ p.param4 }}</td>
+                <td>{{ p.param5 }}</td>
+                <td>{{ p.param6 }}</td>
+                <td>{{ p.param7 }}</td>
+                <td>{{ p.param8 }}</td>
+                <td><button type="button" class="btn btn-outline-primary" onclick="choose_param(this)">Выбрать</button></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
     </div>
 </div>
 
@@ -96,6 +127,7 @@
 
     function get_pdf(){
         data = new FormData(document.getElementById('param1'));
+        data.append('new_table', 'Рассчитываемые параметры')
         data2 = new FormData(document.getElementById('param2'));
         for(var pair of data2.entries()){
             data.append(pair[0], pair[1]);
@@ -109,9 +141,21 @@
                 const anchorElement = document.createElement('a');
                 const url = window.URL.createObjectURL(data);
                 anchorElement.href = url;
-                anchorElement.download = 'Отчёт метрика Холстеда';
+                anchorElement.download = 'Отчёт метрика Чепина';
                 anchorElement.click();
              });
+    }
+
+    function choose_param(button){
+        document.getElementById('P').value =button.parentNode.parentNode.childNodes[1].innerHTML;
+        document.getElementById('PWeight').value =button.parentNode.parentNode.childNodes[3].innerHTML;
+        document.getElementById('M').value =button.parentNode.parentNode.childNodes[5].innerHTML;
+        document.getElementById('MWeight').value =button.parentNode.parentNode.childNodes[7].innerHTML;
+        document.getElementById('C').value =button.parentNode.parentNode.childNodes[9].innerHTML;
+        document.getElementById('CWeight').value =button.parentNode.parentNode.childNodes[11].innerHTML;
+        document.getElementById('T').value =button.parentNode.parentNode.childNodes[13].innerHTML;
+        document.getElementById('TWeight').value =button.parentNode.parentNode.childNodes[15].innerHTML;
+        calculate();
     }
 </script>
 
