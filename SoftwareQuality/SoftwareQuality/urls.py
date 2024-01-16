@@ -23,6 +23,7 @@ urlpatterns = [
     path('halstead/', include('halstead.urls')),
     path('chepin/', include('chepin.urls')),
     path('martin/', include('martin.urls')),
+    path('', include('cod_handler.urls'), name='cod_handler'),
     path('', views.main_index, name='main'),
     path('api/pdf', views.get_pdf, name='get_pdf'),
 

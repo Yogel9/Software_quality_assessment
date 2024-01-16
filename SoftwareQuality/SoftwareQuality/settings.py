@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'halstead',
+    'cod_handler',
     'chepin',
     'martin',
     'django_extensions',
