@@ -8,7 +8,7 @@ from reportlab.lib.pagesizes import A4
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 
-from docx2pdf import convert
+from utils import convert_docx_to_pdf
 
 
 def main_index(request):
@@ -43,9 +43,8 @@ def get_pdf(request):
         cell.text = str(value)
         row_count += 1
 
-
     doc.save('input.docx')
-    convert("input.docx", "output.pdf")
+    convert_docx_to_pdf("input.docx", "output.pdf")
 
     return FileResponse(open('output.pdf', 'rb'))
 
