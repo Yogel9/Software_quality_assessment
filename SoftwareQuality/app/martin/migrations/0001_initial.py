@@ -4,21 +4,45 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='MartinParam',
+            name="MartinParam",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('param1', models.IntegerField(verbose_name='Са (центростремительное сцепление)')),
-                ('param2', models.IntegerField(verbose_name='Се (центробежное сцепление)')),
-                ('param3', models.IntegerField(verbose_name='nA количество абстрактных классов в категории')),
-                ('param4', models.IntegerField(verbose_name='nАll общее количество классов в категории')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "param1",
+                    models.IntegerField(
+                        verbose_name="Са (центростремительное сцепление)"
+                    ),
+                ),
+                (
+                    "param2",
+                    models.IntegerField(verbose_name="Се (центробежное сцепление)"),
+                ),
+                (
+                    "param3",
+                    models.IntegerField(
+                        verbose_name="nA количество абстрактных классов в категории"
+                    ),
+                ),
+                (
+                    "param4",
+                    models.IntegerField(
+                        verbose_name="nАll общее количество классов в категории"
+                    ),
+                ),
             ],
         ),
     ]

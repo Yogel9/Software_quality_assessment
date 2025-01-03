@@ -1,0 +1,49 @@
+exclude: |
+  (?x)^(
+    .*\.github/.*|  # Исключить папку .github
+    .*\b(migrations)\b.*|  # Исключить папки migrations
+    .*\b(pycache)\b.*|     # Исключить папки __pycache__
+    .*\b(.git)\b.*         # Исключить папку .git
+  )$
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: trailing-whitespace  # Удаляет пробелы в конце строк
+      - id: end-of-file-fixer    # Убеждается, что файл заканчивается пустой строкой
+      - id: check-yaml           # Проверяет синтаксис YAML-файлов
+      - id: debug-statements     # Ищет отладочные операторы (например, `print`)
+      - id: check-ast            # Проверяет, что код корректно парсится
+
+  - repo: https://github.com/psf/black
+    rev: 23.9.1
+    hooks:
+      - id: black
+        exclude: '(.+settings.+)|(__init__\.py)'
+
+  - repo: https://github.com/PyCQA/isort
+    rev: 5.12.0
+    hooks:
+      - id: isort
+
+  - repo: https://github.com/myint/autoflake
+    rev: v2.1.1
+    hooks:
+      - id: autoflake
+        args: [
+          --in-place,
+          --remove-all-unused-imports,
+          --ignore-init-module-imports,
+          --remove-unused-variables,
+        ]
+        exclude: '(.+settings.+)|(__init__\.py)'
+
+  - repo: https://github.com/PyCQA/flake8
+    rev: 6.1.0
+    hooks:
+      - id: flake8
+        args: [
+          --ignore=W503 E731 E203
+        ]
+        exclude: '(.+settings.+)|(__init__\.py)'
