@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from halstead.models import HalsteadParam
+from app.halstead.models import HalsteadParam
 
 
 def index(request):

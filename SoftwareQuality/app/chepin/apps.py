@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class MartinConfig(AppConfig):
+class ChepinConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'martin'
+    name = 'app.chepin'

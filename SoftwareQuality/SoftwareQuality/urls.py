@@ -20,10 +20,10 @@ import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('halstead/', include('halstead.urls')),
-    path('chepin/', include('chepin.urls')),
-    path('martin/', include('martin.urls')),
-    path('', include('cod_handler.urls'), name='cod_handler'),
+    path('halstead/', include('app.halstead.urls')),
+    path('chepin/', include('app.chepin.urls')),
+    path('martin/', include('app.martin.urls')),
+    path('', include('app.cod_handler.urls'), name='cod_handler'),
     path('', views.main_index, name='main'),
     path('api/pdf', views.get_pdf, name='get_pdf'),
 

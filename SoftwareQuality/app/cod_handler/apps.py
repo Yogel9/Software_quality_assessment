@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class HalsteadConfig(AppConfig):
+class CodHandlerConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'halstead'
+    name = 'app.cod_handler'

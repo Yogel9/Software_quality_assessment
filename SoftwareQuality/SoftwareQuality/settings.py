@@ -36,10 +36,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'halstead',
-    'cod_handler',
-    'chepin',
-    'martin',
+    'app.halstead',
+    'app.cod_handler',
+    'app.chepin',
+    'app.martin',
     'django_extensions',
 ]
 
