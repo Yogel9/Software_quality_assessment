@@ -1,8 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
 
-
-
 {% block content %}
 <h1> {{context.title}} </h1>
 <hr>
@@ -10,39 +8,45 @@
     <div class="row">
         <div class="col">
             <h4> Исходный код: </h4>
-                {% csrf_token %}
-                <div class="col">
-                    <div class="mb-3">
-                        <textarea class="form-control" name='code_text' rows="35">{{ context.form.code_text }}</textarea>
-                    </div>
-                </div>
+            {% csrf_token %}
+            <div class="mb-3">
+                <textarea class="form-control" name='code_text' rows="20">{{ context.form.code_text }}</textarea>
+            </div>
         </div>
         <div class="col">
-            <h4>Словарь оперантов:</h4>
+            <h4>Словарь операторов:</h4>
             <div class="mb-3">
-                <textarea class="form-control" name='operant_dict' rows="18">{{ context.form.operant_dict }}</textarea>
+                <!-- Выпадающий список для выбора языка -->
+                <label for="language-select">Выберите язык:</label>
+                <select class="form-control" id="language-select">
+                    <option value="">-- Выберите язык --</option>
+                    <option value="python">Python</option>
+                    <option value="java">Java</option>
+                    <option value="javascript">JavaScript</option>
+                    <option value="csharp">C#</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <textarea class="form-control" name='operant_dict' id="operant-dict" rows="5">{{ context.form.operant_dict }}</textarea>
             </div>
             <hr>
             <h4> Параметры из исходного кода: </h4>
-                {% csrf_token %}
-                <div class="col">
-                    <div class="mb-3">
-                        <label class="form-label">Число простых (уникальный) операторов n1</label>
-                        <input class="form-control" id='n1' value="{{ context.code_params.Unic_operator }}">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Число простых (уникальный) операндов n2</label>
-                        <input class="form-control" id='n2' value="{{ context.code_params.Unic_operand }}">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Общее число всех операторов N1</label>
-                        <input class="form-control" id='BN1' value="{{ context.code_params.All_operator }}">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Общее число всех операндов N2</label>
-                        <input class="form-control" id='BN2' value="{{ context.code_params.All_operand }}">
-                    </div>
-                </div>
+            <div class="mb-3">
+                <label class="form-label">Число простых (уникальный) операторов n1</label>
+                <input class="form-control" id='n1' value="{{ context.code_params.Unic_operator }}">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Число простых (уникальный) операндов n2</label>
+                <input class="form-control" id='n2' value="{{ context.code_params.Unic_operand }}">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Общее число всех операторов N1</label>
+                <input class="form-control" id='BN1' value="{{ context.code_params.All_operator }}">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Общее число всех операндов N2</label>
+                <input class="form-control" id='BN2' value="{{ context.code_params.All_operand }}">
+            </div>
         </div>
     </div>
     <div class="d-grid gap-1 mx-auto">
@@ -51,7 +55,25 @@
 </form>
 
 <script>
+    // Словарь с операторами для каждого языка
+    const operatorsByLanguage = {
+        python: "+,-,*,/,//,%,**,==,!=,>,<,>=,<=,and,or,not,=,+=,-=,*=,/=,//=,%=,**=,&,|,^,~,<<,>>,in,not in,is,is not",
+        java: "+, -, *, /, %, ++, --, ==, !=, >, <, >=, <=, &&, ||, !, =, +=, -=, *=, /=, %=, &, |, ^, ~, <<, >>, >>>, instanceof",
+        javascript: "+, -, *, /, %, **, ==, !=, ===, !==, >, <, >=, <=, &&, ||, !, =, +=, -=, *=, /=, %=, **=, &, |, ^, ~, <<, >>, >>>, in, instanceof",
+        csharp: "+, -, *, /, %, ++, --, ==, !=, >, <, >=, <=, &&, ||, !, =, +=, -=, *=, /=, %=, &=, |=, ^=, <<=, >>=, ??, ?:, instanceof"
+    };
 
+    // Обработчик выбора языка
+    document.getElementById('language-select').addEventListener('change', function() {
+        const selectedLanguage = this.value;
+        const operantDictTextarea = document.getElementById('operant-dict');
+
+        if (selectedLanguage && operatorsByLanguage[selectedLanguage]) {
+            operantDictTextarea.value = operatorsByLanguage[selectedLanguage];
+        } else {
+            operantDictTextarea.value = ""; // Очистить поле, если язык не выбран
+        }
+    });
 </script>
 
 {% endblock %}
